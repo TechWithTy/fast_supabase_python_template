@@ -9,8 +9,8 @@ class SupabaseAuthService:
     Provides methods for user management, authentication, session handling, MFA, and admin operations.
     Grouped by logical domains (Admin, MFA, Auth, Session).
     """
-    def __init__(self):
-        self.client = get_supabase_client()
+    def __init__(self, client: Any):
+        self.client = client
         self.auth = self.client.auth
         self.auth.admin = getattr(self.auth, "admin", None)
         self.mfa = getattr(self.auth, "mfa", None)
@@ -19,6 +19,11 @@ class SupabaseAuthService:
         self.mfa_service = self.MFA(self.auth)
         self.session = self.Session(self.auth)
         self.user = self.User(self.auth)
+
+    @classmethod
+    async def create(cls):
+        client = await get_supabase_client()
+        return cls(client)
 
     class Admin:
         def __init__(self, auth):

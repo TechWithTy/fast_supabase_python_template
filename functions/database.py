@@ -1,6 +1,6 @@
 from typing import Any
 
-from app.supabase_home import get_supabase_client
+from app.core.third_party_integrations.supabase_home import get_supabase_client
 from .._service import SupabaseService
 
 
@@ -11,11 +11,12 @@ class SupabaseDatabaseService(SupabaseService):
     This class provides methods for database operations using Supabase's
     RESTful API for PostgreSQL.
     """
+
     def _configure_service(self):
         """Initialize auth-specific client"""
         self.auth = self.raw.table  # Gets the GoTrue client
-        self.rpc = self.raw.rpc     # Assign the method, not the result of calling it
-    
+        self.rpc = self.raw.rpc  # Assign the method, not the result of calling it
+
     def fetch_data(
         self,
         table: str,

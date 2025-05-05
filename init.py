@@ -2,10 +2,6 @@ import logging
 import sys
 
 from app.core.config import settings
-from app.db_utils.sensitive import load_environment_files
-
-# Load environment variables
-load_environment_files()
 
 # Force Python to look for the supabase package in site-packages first
 # This prevents our local 'supabase' module from shadowing the installed library

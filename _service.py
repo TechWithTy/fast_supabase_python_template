@@ -11,18 +11,24 @@ logger = logging.getLogger("apps.supabase_home")
 
 class SupabaseError(Exception):
     """Base exception for Supabase-related errors"""
+
     pass
+
 
 class SupabaseAuthError(SupabaseError):
     """Exception raised for authentication errors"""
+
     pass
+
 
 class SupabaseAPIError(SupabaseError):
     """Exception raised for API errors"""
+
     def __init__(self, message: str, status_code: int = None, details: dict = None):
         self.status_code = status_code
         self.details = details or {}
         super().__init__(message)
+
 
 class SupabaseService:
     """
@@ -39,12 +45,12 @@ class SupabaseService:
     """
 
     def __init__(self):
-        from app.supabase_home import get_supabase_client
+        from app.core.third_party_integrations.supabase_home import get_supabase_client
+
         self.base_url = settings.SUPABASE_URL
         self.anon_key = settings.SUPABASE_ANON_KEY
         self.service_role_key = settings.SUPABASE_SERVICE_ROLE_KEY
         self.raw = get_supabase_client()
-
 
         self._configure_service()
 
@@ -140,7 +146,9 @@ class SupabaseService:
             if response.status_code == 401 or response.status_code == 403:
                 error_detail = self._parse_error_response(response)
                 logger.error(f"Authentication error: {error_detail}")
-                raise HTTPException(status_code=response.status_code, detail=str(error_detail))
+                raise HTTPException(
+                    status_code=response.status_code, detail=str(error_detail)
+                )
 
             response.raise_for_status()
 
@@ -151,7 +159,9 @@ class SupabaseService:
         except httpx.HTTPStatusError as e:
             error_detail = self._parse_error_response(e.response)
             logger.error(f"Supabase API error: {str(e)} - Details: {error_detail}")
-            raise HTTPException(status_code=e.response.status_code, detail=str(error_detail))
+            raise HTTPException(
+                status_code=e.response.status_code, detail=str(error_detail)
+            )
 
         except httpx.RequestError as e:
             logger.error(f"Supabase request exception: {str(e)}")
@@ -159,10 +169,15 @@ class SupabaseService:
 
         except Exception as e:
             logger.exception(f"Unexpected error during Supabase request: {str(e)}")
-            raise HTTPException(status_code=500, detail="Unexpected error during Supabase request")
+            raise HTTPException(
+                status_code=500, detail="Unexpected error during Supabase request"
+            )
 
     def _parse_error_response(self, response) -> dict:
         try:
             return response.json()
         except Exception:
-            return {"status": getattr(response, "status_code", None), "message": getattr(response, "text", str(response))}
+            return {
+                "status": getattr(response, "status_code", None),
+                "message": getattr(response, "text", str(response)),
+            }

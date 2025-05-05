@@ -26,13 +26,16 @@ CB_LAST_FAILURE = {}
 
 NUM_THREADS = int(os.getenv("VAPI_IMPORT_THREADS", "8"))  # Configurable thread count
 
+
 # Caching decorator for module/class import
 @lru_cache(maxsize=128)
 def cached_import(module_name, class_name):
     return getattr(importlib.import_module(module_name), class_name)
 
+
 def import_type(filename):
-    module_name = f"{TypesConfig.library_name}.types.{Path(filename).stem}"
+    # Use fully qualified import path for local supabase client
+    module_name = "app.core.third_party_integrations.supabase_home._client"
     if TypesConfig.conversion_method == "camel_case":
         class_name = "".join(
             part.capitalize() for part in Path(filename).stem.split("_")
@@ -45,16 +48,15 @@ def import_type(filename):
         # Check if recovery timeout has passed
         if time.time() - CB_LAST_FAILURE.get(module_name, 0) < CB_RECOVERY_TIMEOUT:
             print(f"[CB] Circuit open for {module_name}, skipping import.")
-            return
+            return None
         else:
-            CB_STATE[module_name] = "half-open"
+            print(f"[CB] Recovery timeout passed for {module_name}, resetting circuit.")
+            CB_STATE[module_name] = "closed"
+            CB_LAST_FAILURE[module_name] = 0
     try:
         imported_class = cached_import(module_name, class_name)
         with _imported_types_lock:
             _imported_types[class_name] = imported_class
-        # Reset circuit breaker on success
-        CB_STATE[module_name] = "closed"
-        CB_LAST_FAILURE[module_name] = 0
     except Exception as e:
         print(f"[ERROR] Failed to import {class_name} from {module_name}: {e}")
         # Circuit breaker failure tracking
@@ -65,6 +67,7 @@ def import_type(filename):
         if failures >= CB_FAILURE_THRESHOLD:
             CB_STATE[module_name] = "open"
             print(f"[CB] Circuit opened for {module_name} after {failures} failures.")
+
 
 # Use ThreadPoolExecutor to parallelize imports
 with ThreadPoolExecutor(max_workers=NUM_THREADS) as executor:

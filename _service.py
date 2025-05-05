@@ -3,6 +3,8 @@ from typing import Any
 
 import httpx
 from fastapi import HTTPException
+from supabase._async.client import AsyncClient as Client
+from supabase._async.client import create_client
 
 from app.core.third_party_integrations.supabase_home.config import supabase_config
 from app.core.third_party_integrations.supabase_home.exceptions.index import (
@@ -27,12 +29,10 @@ class SupabaseUnsecureService:
     """
 
     def __init__(self):
-        from app.core.third_party_integrations.supabase_home import get_supabase_client
-
         self.base_url = supabase_config.url
         self.anon_key = supabase_config.anon_key
         self.service_role_key = supabase_config.service_role_key
-        self.raw = get_supabase_client()
+        self.raw = self._get_service_role_supabase_client()
 
         self._configure_service()
 
@@ -48,6 +48,16 @@ class SupabaseUnsecureService:
             logger.warning(
                 "SUPABASE_SERVICE_ROLE_KEY is not set in settings. Admin operations will not work."
             )
+
+    def _get_service_role_supabase_client(self) -> Client:
+        """
+        Create a Supabase client using the service role key (bypasses RLS, for admin ops).
+        Returns:
+            An instance of the Supabase AsyncClient with service role privileges.
+        """
+        if not self.base_url or not self.service_role_key:
+            raise ValueError("SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY are required.")
+        return create_client(self.base_url, self.service_role_key)
 
     def _get_headers(
         self, auth_token: str | None = None, is_admin: bool = False

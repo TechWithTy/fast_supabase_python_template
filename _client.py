@@ -14,7 +14,8 @@ for path in sys.path:
 
 try:
     # Try alternative import path (depending on how the package was installed)
-    from supabase import Client, create_client
+    from supabase._async.client import AsyncClient as Client
+    from supabase._async.client import create_client
 except ImportError:
     raise ImportError(
         "Could not import 'create_client' from either 'supabase_py' or 'supabase'. "
@@ -47,7 +48,9 @@ def initialize_supabase() -> Client:
     if _supabase_client is not None:
         return _supabase_client
 
-    print(f"Supabase URL: {supabase_config.url}")  # Added print statement to show the URL
+    print(
+        f"Supabase URL: {supabase_config.url}"
+    )  # Added print statement to show the URL
 
     if not supabase_config.url:
         error_msg = "SUPABASE_URL is not set in settings"

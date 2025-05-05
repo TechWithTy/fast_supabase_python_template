@@ -4,33 +4,15 @@ from typing import Any
 import httpx
 from fastapi import HTTPException
 
-from app.core.config import settings
+from app.core.third_party_integrations.supabase_home.config import supabase_config
+from app.core.third_party_integrations.supabase_home.exceptions.index import (
+    SupabaseAuthError,
+)
 
 logger = logging.getLogger("apps.supabase_home")
 
 
-class SupabaseError(Exception):
-    """Base exception for Supabase-related errors"""
-
-    pass
-
-
-class SupabaseAuthError(SupabaseError):
-    """Exception raised for authentication errors"""
-
-    pass
-
-
-class SupabaseAPIError(SupabaseError):
-    """Exception raised for API errors"""
-
-    def __init__(self, message: str, status_code: int = None, details: dict = None):
-        self.status_code = status_code
-        self.details = details or {}
-        super().__init__(message)
-
-
-class SupabaseService:
+class SupabaseUnsecureService:
     """
     Service class for interacting with Supabase API.
 
@@ -47,9 +29,9 @@ class SupabaseService:
     def __init__(self):
         from app.core.third_party_integrations.supabase_home import get_supabase_client
 
-        self.base_url = settings.SUPABASE_URL
-        self.anon_key = settings.SUPABASE_ANON_KEY
-        self.service_role_key = settings.SUPABASE_SERVICE_ROLE_KEY
+        self.base_url = supabase_config.url
+        self.anon_key = supabase_config.anon_key
+        self.service_role_key = supabase_config.service_role_key
         self.raw = get_supabase_client()
 
         self._configure_service()

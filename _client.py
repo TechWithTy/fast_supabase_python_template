@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from app.core.config import settings
+from app.core.third_party_integrations.supabase_home.config import supabase_config
 
 # Force Python to look for the supabase package in site-packages first
 # This prevents our local 'supabase' module from shadowing the installed library
@@ -47,28 +47,24 @@ def initialize_supabase() -> Client:
     if _supabase_client is not None:
         return _supabase_client
 
-    # Check for required environment variables
-    supabase_url = settings.SUPABASE_URL
-    supabase_key = settings.SUPABASE_ANON_KEY
+    print(f"Supabase URL: {supabase_config.url}")  # Added print statement to show the URL
 
-    print(f"Supabase URL: {supabase_url}")  # Added print statement to show the URL
-
-    if not supabase_url:
+    if not supabase_config.url:
         error_msg = "SUPABASE_URL is not set in settings"
         logger.error(error_msg)
         raise ValueError(error_msg)
 
-    if not supabase_key:
+    if not supabase_config.anon_key:
         error_msg = "SUPABASE_ANON_KEY is not set in settings"
         logger.error(error_msg)
         raise ValueError(error_msg)
 
     # Log initialization (without sensitive info)
-    logger.info(f"Initializing Supabase client with URL: {supabase_url}")
+    logger.info(f"Initializing Supabase client with URL: {supabase_config.url}")
 
     try:
         # Create the Supabase client
-        _supabase_client = create_client(supabase_url, supabase_key)
+        _supabase_client = create_client(supabase_config.url, supabase_config.anon_key)
         logger.info("Supabase client initialized successfully")
         return _supabase_client
     except Exception as e:

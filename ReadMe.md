@@ -20,12 +20,14 @@ This template provides a quick start for integrating Supabase with Python applic
 ## Installation
 
 1. Clone this repository:
+
    ```bash
    git clone https://github.com/yourusername/supabase-python-template.git
-   cd supabase-python-template 
+   cd supabase-python-template
    ```
 
 2. Install the Supabase SDK:
+
    ```bash
    pip install supabase
    ```
@@ -136,7 +138,7 @@ supabase.remove_subscription(subscription)
 
 ```python
 # Invoke an edge function
-response = supabase.functions.invoke('function_name', {'data': 'value'})
+response = supabase.sdk.invoke('function_name', {'data': 'value'})
 ```
 
 ## Django Integration
@@ -146,6 +148,7 @@ This template includes tests that work well with Django's testing framework. To 
 1. Add the template to your Django project
 
 2. Configure Supabase in your Django settings:
+
    ```python
    # settings.py
    SUPABASE_URL = 'your_supabase_project_url'

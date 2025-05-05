@@ -1,9 +1,9 @@
-from .functions.auth import SupabaseAuthService
-from .functions.database import SupabaseDatabaseService
-from .functions.edge_functions import SupabaseEdgeFunctionsService
-from .functions.realtime import SupabaseRealtimeService
-from .functions.storage import SupabaseStorageService
-from app.core.third_party_integrations.supabase_home import get_supabase_client
+from ._client import get_supabase_client
+from .sdk.auth import SupabaseAuthService
+from .sdk.database import SupabaseDatabaseService
+from .sdk.edge_functions import SupabaseEdgeFunctionsService
+from .sdk.realtime import SupabaseRealtimeService
+from .sdk.storage import SupabaseStorageService
 
 
 class SupabaseClient:

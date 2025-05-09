@@ -16,10 +16,10 @@ class SupabaseDatabaseService:
         self,
         table: str,
         select: str = "*",
-        filters: dict[str, Any] | None = None,
-        order: str | None = None,
-        limit: int | None = None,
-        offset: int | None = None,
+        filters: dict[str, Any] | None,
+        order: str | None,
+        limit: int | None,
+        offset: int | None,
     ) -> list[dict[str, Any]]:
         """
         Fetch data from a table with optional filtering, ordering, and pagination.
@@ -90,7 +90,7 @@ class SupabaseDatabaseService:
     def call_function(
         self,
         function_name: str,
-        params: dict[str, Any] | None = None,
+        params: dict[str, Any] | None,
     ) -> Any:
         """
         Call a PostgreSQL function (RPC).

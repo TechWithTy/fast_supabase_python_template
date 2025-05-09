@@ -21,12 +21,12 @@ class SupabaseDatabaseService(SupabaseService):
     def fetch_data(
         self,
         table: str,
-        auth_token: str | None = None,
+        auth_token: str | None,
         select: str = "*",
-        filters: dict[str, Any] | None = None,
-        order: str | None = None,
-        limit: int | None = None,
-        offset: int | None = None,
+        filters: dict[str, Any] | None,
+        order: str | None,
+        limit: int | None,
+        offset: int | None,
     ) -> list[dict[str, Any]]:
         """
         Fetch data from a table with optional filtering, ordering, and pagination.
@@ -74,7 +74,7 @@ class SupabaseDatabaseService(SupabaseService):
         self,
         table: str,
         data: dict[str, Any] | list[dict[str, Any]],
-        auth_token: str | None = None,
+        auth_token: str | None,
         upsert: bool = False,
     ) -> list[dict[str, Any]]:
         """
@@ -108,7 +108,7 @@ class SupabaseDatabaseService(SupabaseService):
         table: str,
         data: dict[str, Any],
         filters: dict[str, Any],
-        auth_token: str | None = None,
+        auth_token: str | None,
     ) -> list[dict[str, Any]]:
         """
         Update data in a table.
@@ -143,7 +143,7 @@ class SupabaseDatabaseService(SupabaseService):
         self,
         table: str,
         data: dict[str, Any] | list[dict[str, Any]],
-        auth_token: str | None = None,
+        auth_token: str | None,
     ) -> list[dict[str, Any]]:
         """
         Upsert data in a table (insert or update).
@@ -159,7 +159,7 @@ class SupabaseDatabaseService(SupabaseService):
         return self.insert_data(table, data, auth_token, upsert=True)
 
     def delete_data(
-        self, table: str, filters: dict[str, Any], auth_token: str | None = None
+        self, table: str, filters: dict[str, Any], auth_token: str | None
     ) -> list[dict[str, Any]]:
         """
         Delete data from a table.
@@ -191,8 +191,8 @@ class SupabaseDatabaseService(SupabaseService):
     def call_function(
         self,
         function_name: str,
-        params: dict[str, Any] | None = None,
-        auth_token: str | None = None,
+        params: dict[str, Any] | None,
+        auth_token: str | None,
     ) -> Any:
         """
         Call a PostgreSQL function.
@@ -212,7 +212,7 @@ class SupabaseDatabaseService(SupabaseService):
         )
 
     def create_test_table(
-        self, table: str, auth_token: str | None = None, is_admin: bool = True
+        self, table: str, auth_token: str | None, is_admin: bool = True
     ) -> dict[str, Any]:
         """
         Create a simple test table for integration tests.
@@ -256,7 +256,7 @@ class SupabaseDatabaseService(SupabaseService):
         )
 
     def delete_table(
-        self, table: str, auth_token: str | None = None, is_admin: bool = True
+        self, table: str, auth_token: str | None, is_admin: bool = True
     ) -> dict[str, Any]:
         """
         Delete a table from the database.

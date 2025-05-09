@@ -593,7 +593,7 @@ class TestRealSupabaseRealtimeService:
             
         print("\n Testing unsubscribe_all method against Supabase Realtime API...")
         
-        # List of created channels to verify
+        # list of created channels to verify
         created_channels = []
         channels_to_cleanup = []
 

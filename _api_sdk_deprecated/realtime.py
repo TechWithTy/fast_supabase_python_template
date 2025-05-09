@@ -23,7 +23,7 @@ class SupabaseRealtimeService(SupabaseService):
         self.active_channels = {}  # Track active subscriptions
 
     async def subscribe_to_channel(
-        self, channel: str, event: str = "*", callback: Callable | None = None
+        self, channel: str, event: str = "*", callback: Callable | None
     ) -> Any:
         """
         Subscribe to a Realtime channel.

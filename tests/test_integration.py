@@ -301,7 +301,7 @@ class TestSupabaseIntegration:
                     f"Failed to upload file to {unique_test_bucket}/{test_file_path} after {max_retries} attempts"
                 )
 
-            # List files in the bucket with retry logic
+            # list files in the bucket with retry logic
             print(f"\nListing files in bucket {unique_test_bucket}")
             files_listed = False
             file_found = False

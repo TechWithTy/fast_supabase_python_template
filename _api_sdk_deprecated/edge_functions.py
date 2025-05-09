@@ -20,9 +20,9 @@ class SupabaseEdgeFunctionsService(SupabaseService):
         self,
         function_name: str,
         invoke_method: str = "POST",
-        body: dict[str, Any] | None = None,
-        headers: dict[str, str] | None = None,
-        auth_token: str | None = None,
+        body: dict[str, Any] | None,
+        headers: dict[str, str] | None,
+        auth_token: str | None,
         is_admin: bool = False,
     ) -> Any:
         """
@@ -77,7 +77,7 @@ class SupabaseEdgeFunctionsService(SupabaseService):
         name: str,
         source_code: str,
         verify_jwt: bool = True,
-        import_map: dict[str, str] | None = None,
+        import_map: dict[str, str] | None,
     ) -> dict[str, Any]:
         """
         Create a new Edge Function in the Supabase project.
@@ -135,9 +135,9 @@ class SupabaseEdgeFunctionsService(SupabaseService):
     def update_function(
         self,
         function_name: str,
-        source_code: str | None = None,
-        verify_jwt: bool | None = None,
-        import_map: dict[str, str] | None = None,
+        source_code: str | None,
+        verify_jwt: bool | None,
+        import_map: dict[str, str] | None,
     ) -> dict[str, Any]:
         """
         Update an existing Edge Function.

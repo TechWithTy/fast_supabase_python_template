@@ -21,9 +21,9 @@ class SupabaseStorageService(SupabaseService):
         self,
         bucket_id: str,
         public: bool = False,
-        file_size_limit: int | None = None,
-        allowed_mime_types: list[str] | None = None,
-        auth_token: str | None = None,
+        file_size_limit: int | None,
+        allowed_mime_types: list[str] | None,
+        auth_token: str | None,
         is_admin: bool = False,
     ) -> dict[str, Any]:
         """
@@ -66,7 +66,7 @@ class SupabaseStorageService(SupabaseService):
         )
 
     def get_bucket(
-        self, bucket_id: str, auth_token: str | None = None, is_admin: bool = False
+        self, bucket_id: str, auth_token: str | None, is_admin: bool = False
     ) -> dict[str, Any]:
         """
         Retrieve a bucket by ID.
@@ -87,7 +87,7 @@ class SupabaseStorageService(SupabaseService):
         )
 
     def list_buckets(
-        self, auth_token: str | None = None, is_admin: bool = False
+        self, auth_token: str | None, is_admin: bool = False
     ) -> list[dict[str, Any]]:
         """
         list all buckets.
@@ -109,10 +109,10 @@ class SupabaseStorageService(SupabaseService):
     def update_bucket(
         self,
         bucket_id: str,
-        public: bool | None = None,
-        file_size_limit: int | None = None,
-        allowed_mime_types: list[str] | None = None,
-        auth_token: str | None = None,
+        public: bool | None,
+        file_size_limit: int | None,
+        allowed_mime_types: list[str] | None,
+        auth_token: str | None,
     ) -> dict[str, Any]:
         """
         Update a bucket.
@@ -146,7 +146,7 @@ class SupabaseStorageService(SupabaseService):
         )
 
     def delete_bucket(
-        self, bucket_id: str, auth_token: str | None = None, is_admin: bool = False
+        self, bucket_id: str, auth_token: str | None, is_admin: bool = False
     ) -> dict[str, Any]:
         """
         Delete a bucket.
@@ -168,7 +168,7 @@ class SupabaseStorageService(SupabaseService):
         )
 
     def empty_bucket(
-        self, bucket_id: str, auth_token: str | None = None
+        self, bucket_id: str, auth_token: str | None
     ) -> dict[str, Any]:
         """
         Empty a bucket (delete all files).
@@ -191,8 +191,8 @@ class SupabaseStorageService(SupabaseService):
         bucket_id: str,
         path: str,
         file_data: bytes | BinaryIO,
-        content_type: str | None = None,
-        auth_token: str | None = None,
+        content_type: str | None,
+        auth_token: str | None,
         is_admin: bool = False,
     ) -> dict[str, Any]:
         """
@@ -294,7 +294,7 @@ class SupabaseStorageService(SupabaseService):
         self,
         bucket_id: str,
         path: str,
-        auth_token: str | None = None,
+        auth_token: str | None,
         is_admin: bool = False,
     ) -> tuple[bytes, str]:
         """
@@ -361,8 +361,8 @@ class SupabaseStorageService(SupabaseService):
         path: str = "",
         limit: int = 100,
         offset: int = 0,
-        sort_by: dict[str, str] | None = None,
-        auth_token: str | None = None,
+        sort_by: dict[str, str] | None,
+        auth_token: str | None,
         is_admin: bool = False,
     ) -> dict[str, Any]:
         """
@@ -426,7 +426,7 @@ class SupabaseStorageService(SupabaseService):
         bucket_id: str,
         source_path: str,
         destination_path: str,
-        auth_token: str | None = None,
+        auth_token: str | None,
     ) -> dict[str, Any]:
         """
         Move a file to a new location.
@@ -456,7 +456,7 @@ class SupabaseStorageService(SupabaseService):
         bucket_id: str,
         source_path: str,
         destination_path: str,
-        auth_token: str | None = None,
+        auth_token: str | None,
     ) -> dict[str, Any]:
         """
         Copy a file to a new location.
@@ -486,7 +486,7 @@ class SupabaseStorageService(SupabaseService):
         bucket_id: str,
         paths: str | list[str] = None,
         path: str = None,
-        auth_token: str | None = None,
+        auth_token: str | None,
         is_admin: bool = False,
     ) -> dict[str, Any]:
         """
@@ -565,7 +565,7 @@ class SupabaseStorageService(SupabaseService):
         bucket_id: str,
         path: str,
         expires_in: int = 60,
-        auth_token: str | None = None,
+        auth_token: str | None,
     ) -> dict[str, Any]:
         """
         Create a signed URL for a file.
@@ -591,7 +591,7 @@ class SupabaseStorageService(SupabaseService):
         bucket_id: str,
         paths: list[str],
         expires_in: int = 60,
-        auth_token: str | None = None,
+        auth_token: str | None,
     ) -> list[dict[str, Any]]:
         """
         Create signed URLs for multiple files.
@@ -613,7 +613,7 @@ class SupabaseStorageService(SupabaseService):
         )
 
     def create_signed_upload_url(
-        self, bucket_id: str, path: str, auth_token: str | None = None
+        self, bucket_id: str, path: str, auth_token: str | None
     ) -> dict[str, Any]:
         """
         Create a signed URL for uploading a file.
@@ -636,7 +636,7 @@ class SupabaseStorageService(SupabaseService):
         self,
         signed_url: str,
         file_data: bytes | BinaryIO,
-        content_type: str | None = None,
+        content_type: str | None,
     ) -> None:
         """
         Upload a file to a signed URL.
@@ -664,7 +664,7 @@ class SupabaseStorageService(SupabaseService):
         self,
         bucket_id: str,
         path: str,
-        auth_token: str | None = None,
+        auth_token: str | None,
         is_admin: bool = False,
     ) -> str:
         """

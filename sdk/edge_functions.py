@@ -19,8 +19,8 @@ class SupabaseEdgeFunctionsService:
         self,
         function_name: str,
         body: Any = None,
-        headers: dict[str, str] | None = None,
-        auth_token: str | None = None,
+        headers: dict[str, str] | None,
+        auth_token: str | None,
         method: str = "POST",
     ) -> Any:
         """

@@ -98,7 +98,7 @@ class TestRealSupabaseStorageService:
                 if "public" in update_result:
                     assert update_result["public"] is False
             
-            # 4. List all buckets
+            # 4. list all buckets
             list_result = storage_service.list_buckets(
                 auth_token=service_key  # Add auth token
             )
@@ -205,7 +205,7 @@ class TestRealSupabaseStorageService:
 
             assert upload_result is not None
 
-            # 2. List files
+            # 2. list files
             list_result = storage_service.list_files(
                 bucket_id=test_bucket_name,
                 auth_token=service_key  # Add auth token
@@ -397,7 +397,7 @@ class TestRealSupabaseStorageService:
             )
             print(f"\nUpload nested file response: {upload_nested_result}")
             
-            # 3. List files
+            # 3. list files
             list_result = storage_service.list_files(
                 bucket_id=test_bucket_name,
                 auth_token=service_key  # Add auth token

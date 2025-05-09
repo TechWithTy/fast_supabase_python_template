@@ -60,7 +60,7 @@ class SupabaseUnsecureService:
         return create_client(self.base_url, self.service_role_key)
 
     def _get_headers(
-        self, auth_token: str | None = None, is_admin: bool = False
+        self, auth_token: str | None, is_admin: bool = False
     ) -> dict[str, str]:
         headers = {
             "Content-Type": "application/json",
@@ -82,11 +82,11 @@ class SupabaseUnsecureService:
         self,
         method: str,
         endpoint: str,
-        auth_token: str | None = None,
+        auth_token: str | None,
         is_admin: bool = False,
-        data: dict[str, Any] | None = None,
-        params: dict[str, Any] | None = None,
-        headers: dict[str, str] | None = None,
+        data: dict[str, Any] | None,
+        params: dict[str, Any] | None,
+        headers: dict[str, str] | None,
         timeout: int = 30,
     ) -> dict[str, Any]:
         url = f"{self.base_url}{endpoint}"

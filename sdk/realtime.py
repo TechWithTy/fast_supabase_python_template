@@ -82,7 +82,7 @@ class SupabaseRealtimeService:
         """
         Retrieve all active channel objects.
         Returns:
-            List of channel objects
+            list of channel objects
         """
         return list(self.active_channels.values())
 

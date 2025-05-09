@@ -16,7 +16,7 @@ class SupabaseAuthService(SupabaseService):
         self.admin_auth = self.raw.auth.admin  # For admin operations
 
     def create_user(
-        self, email: str, password: str, user_metadata: dict[str, Any] | None = None
+        self, email: str, password: str, user_metadata: dict[str, Any] | None
     ) -> dict[str, Any]:
         """
         Create a new user with email and password.
@@ -169,7 +169,7 @@ class SupabaseAuthService(SupabaseService):
         )
 
     def reset_password(
-        self, email: str, redirect_url: str | None = None, is_admin: bool = False
+        self, email: str, redirect_url: str | None, is_admin: bool = False
     ) -> dict[str, Any]:
         """
         Send a password reset email to the user.
@@ -437,7 +437,7 @@ class SupabaseAuthService(SupabaseService):
         self,
         email: str,
         password: str,
-        user_metadata: dict[str, Any] | None = None,
+        user_metadata: dict[str, Any] | None,
         email_confirm: bool = False,
     ) -> dict[str, Any]:
         """

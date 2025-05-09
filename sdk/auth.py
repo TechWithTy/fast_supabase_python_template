@@ -34,12 +34,12 @@ class SupabaseAuthService:
                 raise NotImplementedError("Admin user retrieval not available in SDK")
             return self.admin.get_user_by_id(user_id)
 
-        def list_users(self, params: dict[str, Any] | None = None) -> Any:
+        def list_users(self, params: dict[str, Any] | None) -> Any:
             if not self.admin:
                 raise NotImplementedError("Admin user listing not available in SDK")
             return self.admin.list_users(params or {})
 
-        def create_user(self, email: str, password: str, user_metadata: dict[str, Any] | None = None, email_confirm: bool = False) -> Any:
+        def create_user(self, email: str, password: str, user_metadata: dict[str, Any] | None, email_confirm: bool = False) -> Any:
             if not self.admin:
                 raise NotImplementedError("Admin user creation not available in SDK")
             return self.admin.create_user(
@@ -54,7 +54,7 @@ class SupabaseAuthService:
                 raise NotImplementedError("Admin user deletion not available in SDK")
             return self.admin.delete_user(user_id, should_soft_delete=should_soft_delete)
 
-        def invite_user_by_email(self, email: str, options: dict[str, Any] | None = None) -> Any:
+        def invite_user_by_email(self, email: str, options: dict[str, Any] | None) -> Any:
             if not self.admin:
                 raise NotImplementedError("Admin invite not available in SDK")
             return self.admin.invite_user_by_email(email, options or {})
@@ -128,7 +128,7 @@ class SupabaseAuthService:
         def __init__(self, auth):
             self.auth = auth
 
-        def create(self, email: str, password: str, user_metadata: dict[str, Any] | None = None) -> Any:
+        def create(self, email: str, password: str, user_metadata: dict[str, Any] | None) -> Any:
             return self.auth.sign_up({
                 "email": email,
                 "password": password,

@@ -29,7 +29,7 @@ logger = logging.getLogger(" apps.supabase_home")
 _supabase_client = None
 
 
-def initialize_supabase() -> Client:
+async def initialize_supabase() -> Client:
     """
     Initialize the Supabase client using settings from Django configuration.
 
@@ -67,7 +67,7 @@ def initialize_supabase() -> Client:
 
     try:
         # Create the Supabase client
-        _supabase_client = create_client(supabase_config.url, supabase_config.anon_key)
+        _supabase_client = await create_client(supabase_config.url, supabase_config.anon_key)
         logger.info("Supabase client initialized successfully")
         return _supabase_client
     except Exception as e:
@@ -75,7 +75,7 @@ def initialize_supabase() -> Client:
         raise
 
 
-def get_supabase_client() -> Client:
+async def get_supabase_client() -> Client:
     """
     Get the Supabase client instance, initializing it if necessary.
 
@@ -90,6 +90,6 @@ def get_supabase_client() -> Client:
     global _supabase_client
 
     if _supabase_client is None:
-        return initialize_supabase()
+        return await initialize_supabase()
 
     return _supabase_client

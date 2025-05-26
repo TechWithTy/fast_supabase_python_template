@@ -1,4 +1,4 @@
-from ._client import get_supabase_client
+from .client import get_supabase_client
 from .sdk.auth import SupabaseAuthService
 from .sdk.database import SupabaseDatabaseService
 from .sdk.edge_functions import SupabaseEdgeFunctionsService
@@ -18,16 +18,21 @@ class SupabaseClient:
     - Realtime
     """
 
-    def __init__(self):
+    def __init__(self, client):
         # Initialize the raw supabase client
-        self._raw_client = get_supabase_client()
+        self._raw_client = client
 
         # Initialize service classes
-        self.auth = SupabaseAuthService()
-        self.database = SupabaseDatabaseService()
-        self.storage = SupabaseStorageService()
-        self.edge_functions = SupabaseEdgeFunctionsService()
-        self.realtime = SupabaseRealtimeService()
+        self.auth = SupabaseAuthService(client)
+        self.database = SupabaseDatabaseService(client)
+        self.storage = SupabaseStorageService(client)
+        self.edge_functions = SupabaseEdgeFunctionsService(client)
+        self.realtime = SupabaseRealtimeService(client)
+
+    @classmethod
+    async def create(cls):
+        client = await get_supabase_client()
+        return cls(client)
 
     def get_auth_service(self) -> SupabaseAuthService:
         """
@@ -87,5 +92,4 @@ class SupabaseClient:
         return self._raw_client
 
 
-# Create a singleton instance
-supabase = SupabaseClient()
+

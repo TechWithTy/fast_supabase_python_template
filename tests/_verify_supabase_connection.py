@@ -54,7 +54,7 @@ def verify_supabase_client_import():
     try:
         # Try to import the client - using importlib to avoid unused import warnings
         client_spec = importlib.util.find_spec('apps.supabase_home.init')
-        client_singleton_spec = importlib.util.find_spec('apps.supabase_home.client')
+        client_singleton_spec = importlib.util.find_spec('appsclient')
         
         if client_spec is not None:
             logger.info("✓ Successfully imported get_supabase_client")
@@ -65,7 +65,7 @@ def verify_supabase_client_import():
         if client_singleton_spec is not None:
             logger.info("✓ Successfully imported supabase client singleton")
         else:
-            logger.error("✗ Failed to find apps.supabase_home.client")
+            logger.error("✗ Failed to find appsclient")
             return False
 
         return True

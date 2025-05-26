@@ -7,7 +7,13 @@ from utils.sensitive import load_environment_files
 from fastapi.testclient import TestClient
 from apps.main import app
 
-from apps.supabase_home.auth import SupabaseAuthService
+from app.core.third_party_integrations.supabase_home.functions.auth import SupabaseAuthService
+from app.core.third_party_integrations.supabase_home.client import get_supabase_client
+
+async def get_auth_service() -> SupabaseAuthService:
+    client = await get_supabase_client()
+    return SupabaseAuthService(client)
+
 from apps.supabase_home.storage import SupabaseStorageService
 from apps.supabase_home.database import SupabaseDatabaseService
 from app.core.config import settings  # Import FastAPI settings
@@ -254,8 +260,8 @@ class TestSupabaseIntegration:
 
                     # Set up headers with authentication
                     headers = {
-                        "Authorization": f"Bearer {settings.SUPABASE_SERVICE_ROLE_KEY}",
-                        "apikey": settings.SUPABASE_SERVICE_ROLE_KEY,
+                        "Authorization": f"Bearer {settings.database.SUPABASE_SERVICE_ROLE_KEY}",
+                        "apikey": settings.database.SUPABASE_SERVICE_ROLE_KEY,
                         "Content-Type": "text/plain",
                     }
 
@@ -319,8 +325,8 @@ class TestSupabaseIntegration:
 
                     # Set up headers with authentication
                     headers = {
-                        "Authorization": f"Bearer {settings.SUPABASE_SERVICE_ROLE_KEY}",
-                        "apikey": settings.SUPABASE_SERVICE_ROLE_KEY,
+                        "Authorization": f"Bearer {settings.database.SUPABASE_SERVICE_ROLE_KEY}",
+                        "apikey": settings.database.SUPABASE_SERVICE_ROLE_KEY,
                         "Content-Type": "application/json",
                     }
 
@@ -392,8 +398,8 @@ class TestSupabaseIntegration:
 
                     # Set up headers with authentication
                     headers = {
-                        "Authorization": f"Bearer {settings.SUPABASE_SERVICE_ROLE_KEY}",
-                        "apikey": settings.SUPABASE_SERVICE_ROLE_KEY,
+                        "Authorization": f"Bearer {settings.database.SUPABASE_SERVICE_ROLE_KEY}",
+                        "apikey": settings.database.SUPABASE_SERVICE_ROLE_KEY,
                     }
 
                     # Make the request
@@ -415,8 +421,8 @@ class TestSupabaseIntegration:
 
                     # Set up headers with authentication
                     headers = {
-                        "Authorization": f"Bearer {settings.SUPABASE_SERVICE_ROLE_KEY}",
-                        "apikey": settings.SUPABASE_SERVICE_ROLE_KEY,
+                        "Authorization": f"Bearer {settings.database.SUPABASE_SERVICE_ROLE_KEY}",
+                        "apikey": settings.database.SUPABASE_SERVICE_ROLE_KEY,
                     }
 
                     # Make the request

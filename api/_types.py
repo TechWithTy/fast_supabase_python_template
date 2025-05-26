@@ -27,7 +27,7 @@ supabase_types = [
 
 
 class TypesConfig:
-    import_method = "from app.core.third_party_integrations.supabase_home._client"
+    import_method = "from app.core.third_party_integrations.supabase_home.client"
     conversion_method = "camel_case"
     library_name = "app.core.third_party_integrations.supabase_home"
     relative_file_path = (

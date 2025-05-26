@@ -4,9 +4,8 @@ from collections.abc import Callable
 from typing import Any
 
 from fastapi import HTTPException
-from supabase.realtime_client import RealtimeSubscribeStates
 
-from app.core.third_party_integrations.supabase_home._client import get_supabase_client
+from app.core.third_party_integrations.supabase_home.client import get_supabase_client
 
 logger = logging.getLogger(__name__)
 
@@ -16,9 +15,13 @@ class SupabaseRealtimeService:
     Supports subscribing, broadcasting, and channel management.
     """
 
-    def __init__(self):
-        self.client = get_supabase_client()
+    def __init__(self, client):
+        self.client = client
         self.active_channels = {}
+
+async def get_realtime_service():
+    client = await get_supabase_client()
+    return SupabaseRealtimeService(client)
 
     def subscribe_to_channel(
         self,

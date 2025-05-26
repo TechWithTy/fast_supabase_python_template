@@ -35,7 +35,7 @@ def cached_import(module_name, class_name):
 
 def import_type(filename):
     # Use fully qualified import path for local supabase client
-    module_name = "app.core.third_party_integrations.supabase_home._client"
+    module_name = "app.core.third_party_integrations.supabase_home.client"
     if TypesConfig.conversion_method == "camel_case":
         class_name = "".join(
             part.capitalize() for part in Path(filename).stem.split("_")

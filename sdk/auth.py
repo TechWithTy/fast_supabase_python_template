@@ -1,9 +1,28 @@
 from typing import Any
 
-from .._client import get_supabase_client  # ! Use the unified client
+from ..client import get_supabase_client  # ! Use the unified client
 
 
 class SupabaseAuthService:
+    def get_current_user(self) -> dict[str, Any] | None:
+        """
+        Returns the current authenticated user as a plain dict, or None if not authenticated.
+        Ensures no Supabase client/service or non-serializable object is returned.
+        """
+        user = self.auth.get_user()
+        # Handle SDK object or dict
+        if user is None:
+            return None
+        if isinstance(user, dict):
+            return user
+        # If SDK returns a custom object, try to convert to dict
+        if hasattr(user, 'dict') and callable(getattr(user, 'dict')):
+            return user.dict()
+        if hasattr(user, '__dict__'):
+            return dict(user.__dict__)
+        # Fallback: try to extract only serializable fields
+        return {k: v for k, v in user.__dict__.items() if isinstance(k, str)}
+
     """
     Service for interacting with Supabase Auth API using official supabase-py SDK.
     Provides methods for user management, authentication, session handling, MFA, and admin operations.

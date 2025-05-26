@@ -55,7 +55,7 @@ def pytest_configure(config):
 @pytest.fixture(scope="session")
 def supabase_client():
     """Fixture to provide a real Supabase client for tests"""
-    from apps.supabase_home.client import get_supabase_client
+    from appsclient import get_supabase_client
 
     return get_supabase_client()
 
@@ -63,7 +63,12 @@ def supabase_client():
 @pytest.fixture(scope="session")
 def supabase_service():
     """Fixture to provide a Supabase service for tests"""
-    from apps.supabase_home.service import SupabaseService
+    from app.core.third_party_integrations.supabase_home.functions.auth import SupabaseAuthService
+    from app.core.third_party_integrations.supabase_home.client import get_supabase_client
+
+    async def get_auth_service() -> SupabaseAuthService:
+        client = await get_supabase_client()
+        return SupabaseAuthService(client)
 
     return SupabaseService()
 

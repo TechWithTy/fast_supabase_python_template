@@ -1,6 +1,6 @@
 from typing import Any
 
-from app.core.third_party_integrations.supabase_home._client import get_supabase_client
+from app.core.third_party_integrations.supabase_home.client import get_supabase_client
 
 
 class SupabaseDatabaseService:
@@ -9,17 +9,21 @@ class SupabaseDatabaseService:
     Provides methods for table, row, and function operations.
     """
 
-    def __init__(self):
-        self.client = get_supabase_client()
+    def __init__(self, client):
+        self.client = client
+
+async def get_database_service():
+    client = await get_supabase_client()
+    return SupabaseDatabaseService(client)
 
     def fetch_data(
         self,
         table: str,
         select: str = "*",
-        filters: dict[str, Any] | None,
-        order: str | None,
-        limit: int | None,
-        offset: int | None,
+        filters: dict[str, Any] | None = None,
+        order: str | None = None,
+        limit: int | None = None,
+        offset: int | None = None,
     ) -> list[dict[str, Any]]:
         """
         Fetch data from a table with optional filtering, ordering, and pagination.

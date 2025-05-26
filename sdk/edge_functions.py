@@ -2,7 +2,7 @@ from typing import Any
 
 from supafunc.errors import FunctionsHttpError, FunctionsRelayError
 
-from app.core.third_party_integrations.supabase_home._client import get_supabase_client
+from app.core.third_party_integrations.supabase_home.client import get_supabase_client
 
 
 class SupabaseEdgeFunctionsService:
@@ -11,16 +11,20 @@ class SupabaseEdgeFunctionsService:
     Only the invoke_function method is supported, matching the official SDK.
     """
 
-    def __init__(self):
-        self.client = get_supabase_client()
+    def __init__(self, client):
+        self.client = client
         self.functions = getattr(self.client, "functions", None)
+
+async def get_edge_functions_service():
+    client = await get_supabase_client()
+    return SupabaseEdgeFunctionsService(client)
 
     def invoke_function(
         self,
         function_name: str,
         body: Any = None,
-        headers: dict[str, str] | None,
-        auth_token: str | None,
+        headers: dict[str, str] | None = None,
+        auth_token: str | None = None,
         method: str = "POST",
     ) -> Any:
         """

@@ -1,6 +1,6 @@
-from typing import Any, BinaryIO
+from typing import Any, BinaryIO, List
 
-from app.core.third_party_integrations.supabase_home._client import get_supabase_client
+from app.core.third_party_integrations.supabase_home.client import get_supabase_client
 
 
 class SupabaseStorageService:
@@ -9,11 +9,15 @@ class SupabaseStorageService:
     Provides methods for bucket and file operations, matching the supabase-py API.
     Grouped into logical nested classes: Bucket and File.
     """
-    def __init__(self):
-        self.client = get_supabase_client()
+    def __init__(self, client):
+        self.client = client
         self.storage = self.client.storage
         self.bucket = self.Bucket(self.storage)
         self.file = self.File(self.storage)
+
+async def get_storage_service():
+    client = await get_supabase_client()
+    return SupabaseStorageService(client)
 
     class Bucket:
         def __init__(self, storage):
@@ -47,7 +51,7 @@ class SupabaseStorageService:
         def download(self, bucket_id: str, path: str) -> bytes:
             return self.storage.from_(bucket_id).download(path)
 
-        def list(self, bucket_id: str, folder: str = "", options: dict[str, Any] | None) -> Any:
+        def list(self, bucket_id: str, folder: str = "", options: dict[str, Any] | None = None) -> Any:
             return self.storage.from_(bucket_id).list(folder, options or {})
 
         def update(self, bucket_id: str, path: str, file: BinaryIO | bytes | str, file_options: dict[str, Any]) -> Any:
@@ -59,13 +63,13 @@ class SupabaseStorageService:
         def copy(self, bucket_id: str, from_path: str, to_path: str) -> Any:
             return self.storage.from_(bucket_id).copy(from_path, to_path)
 
-        def remove(self, bucket_id: str, paths: list[str]) -> Any:
+        def remove(self, bucket_id: str, paths: List[str]) -> Any:
             return self.storage.from_(bucket_id).remove(paths)
 
         def create_signed_url(self, bucket_id: str, path: str, expires_in: int, options: dict[str, Any] | None) -> Any:
             return self.storage.from_(bucket_id).create_signed_url(path, expires_in, options or {})
 
-        def create_signed_urls(self, bucket_id: str, paths: list[str], expires_in: int, options: dict[str, Any] | None) -> Any:
+        def create_signed_urls(self, bucket_id: str, paths: List[str], expires_in: int, options: dict[str, Any] | None) -> Any:
             return self.storage.from_(bucket_id).create_signed_urls(paths, expires_in, options or {})
 
         def create_signed_upload_url(self, bucket_id: str, path: str) -> Any:
